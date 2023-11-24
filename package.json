@@ -1,6 +1,6 @@
 {
-  "homepage": "https://coder-anil01.github.io/mern-e-commerce",
-  "name": "mern-e-commerce",
+  "homepage": "https://coder-anil01.github.io/e-commerce-backend",
+  "name": "e-commerce-backend",
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
