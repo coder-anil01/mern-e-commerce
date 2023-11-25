@@ -48,7 +48,6 @@ const Register = () => {
               onChange={(e) => setName(e.target.value)}
               value={name}
               className="form-control"
-              id="exampleInputEmail1"
               placeholder="Enter Name"
               required
             />
@@ -59,7 +58,6 @@ const Register = () => {
               onChange={(e) => setEmail(e.target.value)}
               value={email}
               className="form-control"
-              id="exampleInputEmail1"
               placeholder="Enter Email"
               required
             />
@@ -70,7 +68,6 @@ const Register = () => {
               onChange={(e) => setPassword(e.target.value)}
               value={password}
               className="form-control"
-              id="exampleInputEmail1"
               placeholder="Enter Password"
               required
             />
@@ -81,7 +78,6 @@ const Register = () => {
               onChange={(e) => setPhone(e.target.value)}
               value={phone}
               className="form-control"
-              id="exampleInputEmail1"
               placeholder="Enter Number"
               required
             />
@@ -92,7 +88,6 @@ const Register = () => {
               onChange={(e) => setAddress(e.target.value)}
               value={address}
               className="form-control"
-              id="exampleInputEmail1"
               placeholder="Enter Address"
               required
             />

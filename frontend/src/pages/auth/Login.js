@@ -5,8 +5,10 @@ import Layout from "../../components/layout/Layout";
 import toast from 'react-hot-toast';
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from '../../context/Auth.js'
 
 const Login = () => {
+  const [auth, setAuth] = useAuth()
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -17,16 +19,18 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const res = await axios.post(
-        `/api/v1/auth/login`,
-        { email, password }
-      );
+      const res = await axios.post(`/api/v1/auth/login`,{ email, password });
       if(res.data.success){
-        
+        setAuth({
+          ...auth,
+          user: res.data.user,
+          token: res.data.token,
+        });
+        localStorage.setItem('auth', JSON.stringify(res.data))
+        navigate("/");
         setTimeout(function() {
           toast.success(res.data.message)
         }, 200);
-        navigate("/");
       }else{
         toast.error(res.data.message)
       }
@@ -48,7 +52,6 @@ const Login = () => {
               onChange={(e) => setEmail(e.target.value)}
               value={email}
               className="form-control"
-              id="exampleInputEmail1"
               placeholder="Enter Email"
               required
             />
@@ -59,7 +62,6 @@ const Login = () => {
               onChange={(e) => setPassword(e.target.value)}
               value={password}
               className="form-control"
-              id="exampleInputEmail1"
               placeholder="Enter Password"
               required
             />
