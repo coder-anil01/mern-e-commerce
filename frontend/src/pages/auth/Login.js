@@ -1,10 +1,9 @@
-
 import React, { useState } from "react";
 import "../../style/AuthStyle.css"
 import Layout from "../../components/layout/Layout";
 import toast from 'react-hot-toast';
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from '../../context/Auth.js'
 
 const Login = () => {
@@ -13,6 +12,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
 
   const navigate = useNavigate();
+  const location = useLocation();
 
   //Form function
   const handleSubmit = async (e) => {
@@ -27,7 +27,7 @@ const Login = () => {
           token: res.data.token,
         });
         localStorage.setItem('auth', JSON.stringify(res.data))
-        navigate("/");
+        navigate(location.state || "/");
         setTimeout(function() {
           toast.success(res.data.message)
         }, 200);
