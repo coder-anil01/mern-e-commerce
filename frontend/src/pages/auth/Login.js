@@ -29,7 +29,7 @@ const Login = () => {
         localStorage.setItem('auth', JSON.stringify(res.data))
         navigate(location.state || "/");
         setTimeout(function() {
-          toast.success(res.data.message)
+          toast.success(res.status && res.data.message)
         }, 200);
       }else{
         toast.error(res.data.message)
@@ -67,9 +67,10 @@ const Login = () => {
             />
           </div>
 
-          <button type="submit" className="btn btn-primary">
-            Register
-          </button>
+          <button type="submit" className="btn btn-primary">Login</button>
+          <div className="mt-3">
+          <button onClick={()=> {navigate('/forgot-password')}} type="submit" className="btn btn-primary">Forget Password</button>
+          </div>
         </form>
       </div>
     </Layout>

@@ -9,6 +9,7 @@ const Register = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [answer, setAnswer] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
   const navigate = useNavigate();
@@ -20,7 +21,7 @@ const Register = () => {
     try {
       const res = await axios.post(
         `/api/v1/auth/register`,
-        { name, email, password, phone, address }
+        { name, email, password,answer, phone, address }
       );
       if(res.data.success){
         
@@ -69,6 +70,16 @@ const Register = () => {
               value={password}
               className="form-control"
               placeholder="Enter Password"
+              required
+            />
+          </div>
+          <div className="form-group">
+            <input
+              type="text"
+              onChange={(e) => setAnswer(e.target.value)}
+              value={answer}
+              className="form-control"
+              placeholder="Enter Password Hint"
               required
             />
           </div>
