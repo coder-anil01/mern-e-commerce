@@ -31,10 +31,13 @@ const Header = () => {
     <Link className="navbar-brand" to="/">🛒 E-commerce</Link>
     <ul className="navbar-nav mr-auto mt-2 mt-lg-0 topnav-right">
       <li className="nav-item ">
-        <NavLink className="nav-link" to="/">Home <span className="sr-only">(current)</span></NavLink>
+        <NavLink className="nav-link" to="/">Home</NavLink>
       </li>
       <li className="nav-item ">
-        <NavLink className="nav-link" to="/category">Category <span className="sr-only">(current)</span></NavLink>
+        <NavLink className="nav-link" to="/category">Category</NavLink>
+      </li>
+      <li className="nav-item ">
+        <NavLink className="nav-link" to="/dashbord">Dashbord</NavLink>
       </li>
       {
         !auth.user ? (<>
