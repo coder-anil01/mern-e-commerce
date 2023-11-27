@@ -36,9 +36,7 @@ const Header = () => {
       <li className="nav-item ">
         <NavLink className="nav-link" to="/category">Category</NavLink>
       </li>
-      <li className="nav-item ">
-        <NavLink className="nav-link" to="/dashbord">Dashbord</NavLink>
-      </li>
+    
       {
         !auth.user ? (<>
         <li className="nav-item">
