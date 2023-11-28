@@ -53,7 +53,7 @@ const Header = () => {
         </NavLink>
         <div className="dropdown-menu" aria-labelledby="navbarDropdown">
           <NavLink className="dropdown-item" to={`/dashbord/${auth?.user?.role === 1 ? "admin" : "user"}`}>Dashbord</NavLink>
-          <NavLink className="dropdown-item bg-danger" onClick={handleLogout} to="/">Logout</NavLink>
+          <NavLink className="dropdown-item bg-danger text-light" onClick={handleLogout} to="/">Logout</NavLink>
         </div>
       </li>
         </>)}
