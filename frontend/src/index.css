@@ -82,3 +82,10 @@ font-family: 'Poppins', sans-serif; */
     align-items: center;
     justify-content: center ;
 }
+
+/* products.js */
+.product-link,
+.product-link:hover{
+    text-decoration: none;
+    color: black;
+}
