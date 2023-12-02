@@ -105,18 +105,6 @@ export const productPhotoController = async (req, res)=>{
 //=> Delete Product
 export const deleteProductController = async (req, res)=> {
     try {
-        // const { id } = req.params;
-
-        // const existingProduct = await productModel.findById(id)
-        // if(!existingProduct){
-        //     return res.status(200).send({success:true, message: "Product Not Found"})
-        // }
-        // await categoryModel.findByIdAndDelete(id);
-        // res.status(200).send({
-        //     success: true,
-        //     message: "Product Deleted Successfully"
-        // })
-
         await productModel.findByIdAndDelete(req.params.pid).select("-photo")
         res.status(200).send({
             success: true,
@@ -200,5 +188,64 @@ export const productFilterController = async (req, res) =>{
       error,
       message: "Error in Filter product",
     });
+    }
+}
+
+//count products
+export const productCountController = async (req, res)=> {
+    try {
+        const total = await productModel.find({}).estimatedDocumentCount();
+        res.status(200).send({
+            success: true,
+            total,
+        });
+    } catch (error) {
+        console.log(error)
+        res.status(400).send({
+            message: "Error in product count",
+            error,
+            success: false
+        })
+    }
+}
+
+//product list base on page
+export const productListController = async (req, res)=> {
+    try {
+        const perPage = 2;
+        const page = req.params.page ? req.params.page : 1;
+        const products = await productModel.find({}).select("-photo").skip((page-1)*perPage).limit(perPage).sort({ createdAt: -1 });
+        res.status(200).send({
+            success: true,
+            products,
+        })
+    } catch (error) {
+        console.log(error)
+        res.status(400).send({
+            message: "Error in perPage controller",
+            success: false,
+            error,
+        })
+    }
+}
+
+//serch Product
+export const serchProductController = async (req, res)=> {
+    try {
+        const { keyword }= req.keyword;
+        const results = await productModel.find({
+            $or:[
+                { name: {$regex: keyword, $options: "i"}},
+                {description: {$regex: keyword, $options: "i"}},
+            ]
+        }).select("-photo");
+        res.json(results);
+    } catch (error) {
+        console.log(error)
+        res.status(400).send({
+            message: "Error in Serch Produch",
+            success: false,
+            error,
+        })
     }
 }

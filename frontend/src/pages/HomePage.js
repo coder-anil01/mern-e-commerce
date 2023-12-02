@@ -5,10 +5,13 @@ import {Checkbox, Radio} from 'antd';
 import { Prices } from '../components/Prices';
 
 const HomePage = () => {
-  const[products, setProducts] = useState([])
-  const[categories, setCategories] = useState([])
-  const[checked, setChecked] = useState([])
-  const[radio, setRadio] = useState([])
+  const[products, setProducts] = useState([]);
+  const[categories, setCategories] = useState([]);
+  const[checked, setChecked] = useState([]);
+  const[radio, setRadio] = useState([]);
+  const[total, setTotal] = useState(0);
+  const[page, setPage] = useState(1);
+  const[loading, setLoading] = useState(false);
 
    // get all category
    const getAllCategory = async () => {
@@ -24,14 +27,18 @@ const HomePage = () => {
 
    useEffect(() => {
      getAllCategory();
+     getTotal();
    }, []);
 
   //Get All Product
   const getAllProduct = async()=>{
     try {
-      const {data} = await axios.get("/api/v1/product/get-product");
+      setLoading(true)
+      const {data} = await axios.get(`/api/v1/product/product-list/${page}`);
+      setLoading(false)
       setProducts(data.products);
     } catch (error) {
+      setLoading(false)
       console.log(error)
     }
   };
@@ -53,6 +60,33 @@ const HomePage = () => {
     }
     setChecked(all);
   };
+
+    //get Total Count
+    const getTotal = async()=> {
+      try {
+        const {data} = await axios.get('/api/v1/product/product-count')
+        setTotal(data?.total)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+
+    //Loading More
+    const loadMore = async()=> {
+      try {
+        setLoading(true)
+        const {data} = await axios.get(`/api/v1/product/product-list/${page}`)
+        setLoading(false)
+        setProducts([...products, ...data?.products])
+      } catch (error) {
+        console.log(error)
+        setLoading(false)
+      }
+    }
+    useEffect(()=>{
+      if(page === 1 ) return
+      loadMore()
+    },[page]);
 
   //get Filter product
   const filterProduct = async ()=>{
@@ -93,9 +127,9 @@ const HomePage = () => {
             <button className='btn' onClick={() => window.location.reload()}>RESET FILTERS</button>
         </div>
         </div>
-        <div className="col-md-9">
 
 {/* All Products */}
+        <div className="col-md-9">
           <h1 className="text-center">All Products</h1>
           <div className="d-flex flex-column"></div>
           <div className="d-flex flex-wrap">
@@ -114,6 +148,16 @@ const HomePage = () => {
                 </div>
             ))}
           </div>
+          <div className="m-2 p-3">
+            {products && products.length < total && (
+              <button className="btn btn-warning"
+              onClick={(e)=> {
+                e.preventDefault();
+                setPage(page + 1);
+              }}
+              >{loading ? "Loading..." : "Loadmore"}</button>
+            )}
+          </div>
         </div>
       </div>
     </Layout>
@@ -121,3 +165,4 @@ const HomePage = () => {
 }
 
 export default HomePage
+
