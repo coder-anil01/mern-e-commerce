@@ -85,6 +85,22 @@ const params = useParams();
     }
   }
 
+  //handleDelete
+  const handleDelete = async ()=>{
+    let answer = window.prompt('if you want to delete this product "TYPE ANYTHING" ')
+    if(!answer) return;
+    try {
+      const {data} = await axios.delete(`/api/v1/product/delete-product/${id}`);
+      setTimeout(function() {
+        toast.success("Product Deleted Successfully")
+      }, 200);
+      navigate('/dashbord/admin/products')
+    } catch (error) {
+      console.log(error)
+      toast.error("Somthing went wrong")
+    }
+  };
+
   return (
     <Layout title={"Dashbord-Create Product"}>
       <div className="container-fluid m-3 p-3">
@@ -201,8 +217,11 @@ const params = useParams();
                   <Option value="1">Yes</Option>
                 </Select>
               </div>
-              <div className="mb-3">
+              <div className="mb-4">
                 <button className="btn btn-primary" onClick={handleUpdate}>UPDATE PRODUCT</button>
+              </div>
+              <div>
+              <button className="btn btn-danger" onClick={handleDelete}>DELETE PRODUCT</button>
               </div>
             </div>
           </div>

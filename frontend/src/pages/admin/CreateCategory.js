@@ -71,6 +71,8 @@ const CreateCategory = () => {
 
    // Deleted category
    const handleDelete = async (id)=> {
+    let answer = window.prompt('if you want to delete this category "TYPE ANYTHING" ')
+    if(!answer) return;
     try {
       const {data} = await axios.delete(`/api/v1/category/delete-category/${id}`, );
       if(data.success){
