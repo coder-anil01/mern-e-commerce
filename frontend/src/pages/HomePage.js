@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import Layout from '../components/layout/Layout'
 import axios from 'axios';
-import Checkbox from 'antd/es/checkbox/Checkbox.js';
+import {Checkbox, Radio} from 'antd';
+import { Prices } from '../components/Prices';
 
 const HomePage = () => {
   const[products, setProducts] = useState([])
   const[categories, setCategories] = useState([])
   const[checked, setChecked] = useState([])
+  const[radio, setRadio] = useState([])
 
    // get all category
    const getAllCategory = async () => {
@@ -34,8 +36,11 @@ const HomePage = () => {
     }
   };
   useEffect(()=>{
-    getAllProduct()
-  },[])
+    if(!checked.length || !radio.length) getAllProduct();
+  },[checked.length, radio.length])
+  useEffect(()=>{
+    if(checked.length || radio.length) filterProduct()
+  },[checked, radio])
 
 
   //Filter Category
@@ -48,11 +53,22 @@ const HomePage = () => {
     }
     setChecked(all);
   };
+
+  //get Filter product
+  const filterProduct = async ()=>{
+    try {
+      const {data} = await axios.post(`/api/v1/product/product-filter`, {checked, radio})
+      setProducts(data?.products)
+    } catch (error) {
+      console.log(error)
+    }
+  }
   
   return (
     <Layout title={"Best-offers Shop Now"}>
       <div className="row mt-4">
         <div className="col-md-3">
+{/* Filter by Category */}
           <h4 className="text-center">Filter By Category</h4>
           <div className="d-flex flex-column ml-3">
           {categories?.map((c) => (
@@ -61,9 +77,25 @@ const HomePage = () => {
           </Checkbox>
         ))}
         </div>
+{/* Filter by Price */}
+          <h4 className="text-center mt-5">Filter By Category</h4>
+          <div className="d-flex flex-column ml-3">
+          <Radio.Group onChange={e => setRadio(e.target.value)}>
+            {Prices?.map(p => (
+              <div key={p._id}>
+                <Radio value={p.array}>{p.name}</Radio>
+              </div>
+            ))}
+          </Radio.Group>
+        </div>
+{/* Reset Filter */}
+          <div className="d-flex flex-column ml-3">
+            <button className='btn' onClick={() => window.location.reload()}>RESET FILTERS</button>
+        </div>
         </div>
         <div className="col-md-9">
-          {JSON.stringify(checked, null, 4)}
+
+{/* All Products */}
           <h1 className="text-center">All Products</h1>
           <div className="d-flex flex-column"></div>
           <div className="d-flex flex-wrap">
@@ -74,7 +106,8 @@ const HomePage = () => {
                 alt={p.name} />
                 <div className="card-body">
                 <h5 className="card-title">{p.name}</h5>
-                <p className="card-text">{p.description}</p>
+                <p className="card-text">{p.description.substring(0,30)}...</p>
+                <p className="card-text">₹ {p.price}</p>
                 <button className="btn btn-info mr-1">More Details</button>
                 <button className="btn btn-warning ml-1">Add to Cart</button>
                 </div>
