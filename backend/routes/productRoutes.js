@@ -5,6 +5,7 @@ import { createProductController,
     deleteProductController,
     getProductController,
     getSingleProductController,
+    productCategoryController,
     productCountController,
     productFilterController,
     productListController,
@@ -49,5 +50,8 @@ router.get("/search/:keyword", serchProductController)
 
 //simler Product
 router.get('/related-product/:pid/:cid', relatedProductController)
+
+//Categoris wise Product
+router.get('/product-category/:slug', productCategoryController)
 
 export default router
