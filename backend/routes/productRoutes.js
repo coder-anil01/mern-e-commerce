@@ -44,6 +44,6 @@ router.get('/product-count', productCountController)
 router.get('/product-list/:page', productListController)
 
 //Product Serch
-router.get("/serch/:keyword", serchProductController)
+router.get("/search/:keyword", serchProductController)
 
 export default router

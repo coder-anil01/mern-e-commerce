@@ -3,6 +3,7 @@ import { NavLink, Link } from 'react-router-dom'
 import {useAuth} from "../../context/Auth.js"
 import toast from 'react-hot-toast';
 import { useNavigate } from "react-router-dom";
+import SearchInput from '../form/SearchInput.js';
 
 
 const Header = () => {
@@ -60,6 +61,7 @@ const Header = () => {
       <li className="nav-item ">
         <NavLink className="nav-link" to="/cart">Cart 🛒(0)</NavLink>
       </li>
+      <SearchInput/>
     </ul>
     </div>
     </nav>

@@ -1,7 +1,6 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 import HomePage from "./pages/HomePage";
-import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Policy from "./pages/Policy";
 import PageNotFound from "./pages/PageNotFound";
@@ -19,13 +18,14 @@ import Profile from "./pages/user/Profile";
 import Orders from "./pages/user/Orders";
 import Products from "./pages/admin/Products";
 import UpdateProduct from "./pages/admin/UpdateProduct";
+import Search from "./pages/Search";
 
 function App() {
   return (
     <>
     <Routes>
     <Route path="/" element={<HomePage/>}/>
-    <Route path="/about" element={<About/>}/>
+    <Route path="/search" element={<Search/>}/>
 
     <Route path="/dashbord" element={<PrivateRoute/>}>
       <Route path="user" element={<Dashbord/>}/>

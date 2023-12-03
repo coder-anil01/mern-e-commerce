@@ -232,7 +232,7 @@ export const productListController = async (req, res)=> {
 //serch Product
 export const serchProductController = async (req, res)=> {
     try {
-        const { keyword }= req.keyword;
+        const { keyword } = req.params;
         const results = await productModel.find({
             $or:[
                 { name: {$regex: keyword, $options: "i"}},
