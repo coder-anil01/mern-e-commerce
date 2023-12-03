@@ -5,7 +5,8 @@ import Layout from '../components/layout/Layout'
 
 const ProductDetails = () => {
     const params = useParams()
-    const [product, setProduct] = useState({})
+    const [product, setProduct] = useState({});
+    const [realtedProduct, setRealtedProduct] = useState([]);
 
     useEffect(()=>{
         if(params?.slug) getProduct()
@@ -15,6 +16,17 @@ const ProductDetails = () => {
         try {
             const {data} = await axios.get(`/api/v1/product/get-product/${params.slug}`)
             setProduct(data?.product)
+            getSimilarProduct(data?.product._id, data?.product.category._id)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    //get simler product
+    const getSimilarProduct = async (pid, cid) => {
+        try {
+            const {data} = await axios.get(`/api/v1/product/related-product/${pid}/${cid}`)
+            setRealtedProduct(data?.products)
         } catch (error) {
             console.log(error)
         }
@@ -37,7 +49,24 @@ const ProductDetails = () => {
                 <button className="btn btn-warning ml-1">Add to Cart</button>
             </div>
         </div>
-        <div className="row">similar products</div>
+        <hr/>
+        <h4 className="row container mt-5"> related products</h4>
+        {realtedProduct.length < 1 && <p className='text-center'> No Similar products Found</p>}
+        <div className="d-flex flex-wrap">
+          {realtedProduct?.map(p=>(
+                <div className="card m-3" style={{width: '18rem'}}>
+                <img className="card-img-top" src={`/api/v1/product/product-photo/${p._id}`}
+                style={{width: '18rem', height:"300px", objectFit: "contain"}}
+                alt={p.name} />
+                <div className="card-body">
+                <h5 className="card-title">{p.name}</h5>
+                <p className="card-text">{p.description.substring(0,30)}...</p>
+                <p className="card-text">₹ {p.price}</p>
+                <button className="btn btn-warning ml-1">Add to Cart</button>
+                </div>
+                </div>
+            ))}
+          </div>
     </Layout>
   )
 }
