@@ -7,16 +7,19 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 import { AuthProvider } from './context/Auth';
 import { SearchProvider } from './context/Search';
+import { CartProvider } from './context/Cart';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <BrowserRouter>
-    <SearchProvider>
+  <SearchProvider>
+    <CartProvider>
       <AuthProvider>
+      <BrowserRouter>
         <App />
+      </BrowserRouter>
       </AuthProvider>
+    </CartProvider>
     </SearchProvider>
-  </BrowserRouter>
 );
 
 // If you want to start measuring performance in your app, pass a function

@@ -5,12 +5,14 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import SearchInput from "../form/SearchInput.js";
 import useCategory from "../../hooks/useCategory.js";
+import { useCart } from "../../context/Cart.js";
+import {Badge} from 'antd';
 
 const Header = () => {
   const navigate = useNavigate();
   const [auth, setAuth] = useAuth();
   const categories = useCategory();
-  console.log(categories);
+  const[cart] = useCart();
 
   const handleLogout = () => {
     setTimeout(function () {
@@ -115,9 +117,11 @@ const Header = () => {
               </>
             )}
             <li className="nav-item ">
+              <Badge count={cart?.length} showZero>
               <NavLink className="nav-link" to="/cart">
-                Cart 🛒(0)
+                Cart
               </NavLink>
+              </Badge>
             </li>
             <SearchInput />
           </ul>
