@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 const CartPage = () => {
   const [auth, setAuth] = useAuth();
   const [cart, setCart] = useCart();
-  const navigation = useNavigate();
+  const navigate = useNavigate();
 
   const totalPrice = ()=> {
     try {
@@ -83,6 +83,30 @@ const CartPage = () => {
             <p> total | Checkout | Payment</p>
             <hr/>
             <h5>Total:- {totalPrice()}</h5>
+            {auth?.user?.address ? (
+              <>
+              <div className="mb-3">
+                <h4>Current Address</h4>
+                <h5>{auth?.user?.address}</h5>
+                <button className="btn btn-outline-warning"
+                onClick={()=> navigate('/dashbord/user/profile')}
+                >Update Address</button>
+              </div>
+              </>
+            ) : (
+              <div className="mb-3">
+                {auth?.token ? (
+                  <button className="btn btn-outline-warning"
+                  onClick={()=> navigate('/dashbord/user/profile')}
+                  >Update Address</button>
+                ) : (
+                  <button className="btn btn-outline-warning"
+                  onClick={()=> navigate('/login',{
+                    state: '/cart',
+                  })}>Plese login to checkout</button>
+                )}
+              </div>
+            )}
           </div>
         </div>
       </div>
