@@ -160,3 +160,34 @@ export const testController = (req, res) => {
     res.send({ error });
   }
 };
+
+//update profle
+export const updateProfileController = async(req, res)=> {
+  try {
+    const {name, email, password, adddress, phone } = req.body
+    const user = await userModel.findById(req.user._id)
+    //password
+    if(password && password.length < 6){
+      return res.json({error: 'password is reqired and 6 character long'})
+    }
+    const hashedPassword = password ? await hashPassword(password): undefined
+    const updateUser = await userModel.findByIdAndUpdate(req.user._id, {
+      name: name || user.name,
+      password: hashedPassword || user.password,
+      phone: phone || user.phone,
+      adddress: adddress ||user.address
+    },{new: true})
+    res.status(200).send({
+      success: true,
+      message: 'Profile Updated Successfully',
+      updateUser,
+    })
+  } catch (error) {
+    console.log(error)
+    res.status(500).send({
+      success: false,
+      message: "Error while updating Profle",
+      error
+    })
+  }
+}
