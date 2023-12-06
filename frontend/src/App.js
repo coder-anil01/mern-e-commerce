@@ -38,7 +38,7 @@ function App() {
     <Route path="/dashbord" element={<PrivateRoute/>}>
       <Route path="user" element={<Dashbord/>}/>
       <Route path="user/profile" element={<Profile/>}/>
-      <Route path="user/order" element={<Orders/>}/>
+      <Route path="user/orders" element={<Orders/>}/>
     </Route>
     <Route path="/dashbord" element={<AdminRoute />}>
       <Route path="admin" element={<AdminDashbord />}/>
