@@ -1,6 +1,7 @@
 import userModel from "../models/userModel.js";
 import { comparePassword, hashPassword } from "../helpers/authHelper.js";
 import JWT from "jsonwebtoken";
+import orderModel from "../models/orderModel.js";
 
 export const registerController = async (req, res) => {
   try {
@@ -114,40 +115,40 @@ export const loginController = async (req, res) => {
 };
 
 //forgotPasswordController
-export const forgotPasswordController = async (req, res)=>{
+export const forgotPasswordController = async (req, res) => {
   try {
-    const {email, answer, newPassword} = req.body
-    if(!email){
-      res.status(400).send({message: "Email is required"})
+    const { email, answer, newPassword } = req.body;
+    if (!email) {
+      res.status(400).send({ message: "Email is required" });
     }
-    if(!answer){
-      res.status(400).send({message: "Answer is required"})
+    if (!answer) {
+      res.status(400).send({ message: "Answer is required" });
     }
-    if(!newPassword){
-      res.status(400).send({message: "New password is required"})
+    if (!newPassword) {
+      res.status(400).send({ message: "New password is required" });
     }
     //check
-    const user = await userModel.findOne({email, answer});
+    const user = await userModel.findOne({ email, answer });
     //Validation
-    if(!user){
+    if (!user) {
       return res.status(404).send({
         success: false,
         message: "Worng Email or Answer",
-      })
+      });
     }
     const hased = await hashPassword(newPassword);
-    await userModel.findByIdAndUpdate(user._id, {password: hased});
+    await userModel.findByIdAndUpdate(user._id, { password: hased });
     res.status(200).send({
       success: true,
-      message: "Password Reset Successfully"
+      message: "Password Reset Successfully",
     });
   } catch (error) {
-    console.log(error)
+    console.log(error);
     res.status(500).send({
       success: false,
       message: "Somthing went wrong",
-      error
-    })
+      error,
+    });
   }
 };
 
@@ -162,32 +163,54 @@ export const testController = (req, res) => {
 };
 
 //update profle
-export const updateProfileController = async(req, res)=> {
+export const updateProfileController = async (req, res) => {
   try {
-    const {name, email, password, adddress, phone } = req.body
-    const user = await userModel.findById(req.user._id)
+    const { name, email, password, adddress, phone } = req.body;
+    const user = await userModel.findById(req.user._id);
     //password
-    if(password && password.length < 6){
-      return res.json({error: 'password is reqired and 6 character long'})
+    if (password && password.length < 6) {
+      return res.json({ error: "password is reqired and 6 character long" });
     }
-    const hashedPassword = password ? await hashPassword(password): undefined
-    const updateUser = await userModel.findByIdAndUpdate(req.user._id, {
-      name: name || user.name,
-      password: hashedPassword || user.password,
-      phone: phone || user.phone,
-      adddress: adddress ||user.address
-    },{new: true})
+    const hashedPassword = password ? await hashPassword(password) : undefined;
+    const updateUser = await userModel.findByIdAndUpdate(
+      req.user._id,
+      {
+        name: name || user.name,
+        password: hashedPassword || user.password,
+        phone: phone || user.phone,
+        adddress: adddress || user.address,
+      },
+      { new: true }
+    );
     res.status(200).send({
       success: true,
-      message: 'Profile Updated Successfully',
+      message: "Profile Updated Successfully",
       updateUser,
-    })
+    });
   } catch (error) {
-    console.log(error)
+    console.log(error);
     res.status(500).send({
       success: false,
       message: "Error while updating Profle",
-      error
-    })
+      error,
+    });
   }
-}
+};
+
+//Order controller
+export const getOrderController = async (req, res) => {
+  try {
+    const orders = await orderModel
+      .find({ buyer: req.user._id })
+      .populate("products", "-photo")
+      .populate("buyer", "name");
+    res.json(orders);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      message: "Error WHile Geting Orders",
+      error,
+    });
+  }
+};
