@@ -15,7 +15,7 @@ import CreateCategory from "./pages/admin/CreateCategory";
 import Users from "./pages/admin/Users";
 import CreateProduct from "./pages/admin/CreateProduct";
 import Profile from "./pages/user/Profile";
-import Orders from "./pages/user/Orders";
+import Orders from "./pages/admin/Orders";
 import Products from "./pages/admin/Products";
 import UpdateProduct from "./pages/admin/UpdateProduct";
 import Search from "./pages/Search";
@@ -47,6 +47,7 @@ function App() {
       <Route path="admin/product/:slug" element={<UpdateProduct />}/>
       <Route path="admin/products" element={<Products />}/>
       <Route path="admin/users" element={<Users />}/>
+      <Route path="admin/orders" element={<Orders />}/>
     </Route>
 
     <Route path="/register" element={<Register/>}/>
